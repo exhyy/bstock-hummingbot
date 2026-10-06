@@ -1,7 +1,7 @@
 import uuid
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-from hummingbot.connector.exchange.binance import binance_constants as CONSTANTS
+from hummingbot.connector.exchange.binance import binance_constants as CONSTANTS, binance_web_utils as web_utils
 from hummingbot.connector.exchange.binance.binance_auth import BinanceAuth
 from hummingbot.core.data_type.user_stream_tracker_data_source import UserStreamTrackerDataSource
 from hummingbot.core.web_assistant.connections.data_types import WSJSONRequest, WSResponse
@@ -34,7 +34,7 @@ class BinanceAPIUserStreamDataSource(UserStreamTrackerDataSource):
 
     async def _connected_websocket_assistant(self) -> WSAssistant:
         ws = await self._get_ws_assistant()
-        url = CONSTANTS.WSS_API_URL.format(self._domain)
+        url = web_utils.private_ws_url(self._domain)
         await ws.connect(ws_url=url, ping_timeout=CONSTANTS.WS_HEARTBEAT_TIME_INTERVAL)
         return ws
 

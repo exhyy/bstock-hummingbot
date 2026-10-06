@@ -4,6 +4,7 @@ from typing import Any, Dict
 from pydantic import ConfigDict, Field, SecretStr
 
 from hummingbot.client.config.config_data_types import BaseConnectorConfigMap
+from hummingbot.connector.exchange.binance import binance_constants as CONSTANTS
 from hummingbot.core.data_type.trade_fee import TradeFeeSchema
 
 CENTRALIZED = True
@@ -62,3 +63,34 @@ class BinanceConfigMap(BaseConnectorConfigMap):
 
 
 KEYS = BinanceConfigMap.model_construct()
+
+OTHER_DOMAINS = ["binance_demo"]
+OTHER_DOMAINS_PARAMETER = {"binance_demo": CONSTANTS.DEMO_DOMAIN}
+OTHER_DOMAINS_EXAMPLE_PAIR = {"binance_demo": "NVDAB-USDT"}
+OTHER_DOMAINS_DEFAULT_FEES = {"binance_demo": DEFAULT_FEES}
+
+
+class BinanceDemoConfigMap(BaseConnectorConfigMap):
+    connector: str = "binance_demo"
+    binance_demo_api_key: SecretStr = Field(
+        default=...,
+        json_schema_extra={
+            "prompt": lambda cm: "Enter your Binance Demo API key",
+            "is_secure": True,
+            "is_connect_key": True,
+            "prompt_on_new": True,
+        }
+    )
+    binance_demo_api_secret: SecretStr = Field(
+        default=...,
+        json_schema_extra={
+            "prompt": lambda cm: "Enter your Binance Demo API secret",
+            "is_secure": True,
+            "is_connect_key": True,
+            "prompt_on_new": True,
+        }
+    )
+    model_config = ConfigDict(title="binance_demo")
+
+
+OTHER_DOMAINS_KEYS = {"binance_demo": BinanceDemoConfigMap.model_construct()}

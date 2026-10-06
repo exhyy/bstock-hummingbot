@@ -123,6 +123,19 @@ class BinanceAPIOrderBookDataSourceUnitTests(IsolatedAsyncioWrapperTestCase):
         }
         return resp
 
+    async def test_connected_websocket_assistant_uses_demo_public_stream(self):
+        self.data_source._domain = CONSTANTS.DEMO_DOMAIN
+        ws = AsyncMock()
+        self.data_source._api_factory.get_ws_assistant = AsyncMock(return_value=ws)
+
+        connected_ws = await self.data_source._connected_websocket_assistant()
+
+        self.assertIs(ws, connected_ws)
+        ws.connect.assert_awaited_once_with(
+            ws_url=CONSTANTS.DEMO_WSS_URL,
+            ping_timeout=CONSTANTS.WS_HEARTBEAT_TIME_INTERVAL,
+        )
+
     @aioresponses()
     async def test_get_new_order_book_successful(self, mock_api):
         url = web_utils.public_rest_url(path_url=CONSTANTS.SNAPSHOT_PATH_URL, domain=self.domain)

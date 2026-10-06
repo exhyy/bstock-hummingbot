@@ -127,6 +127,19 @@ class BinanceUserStreamDataSourceUnitTests(IsolatedAsyncioWrapperTestCase):
             }
         })
 
+    async def test_connected_websocket_assistant_uses_demo_private_stream(self):
+        self.data_source._domain = CONSTANTS.DEMO_DOMAIN
+        ws = AsyncMock()
+        self.data_source._get_ws_assistant = AsyncMock(return_value=ws)
+
+        connected_ws = await self.data_source._connected_websocket_assistant()
+
+        self.assertIs(ws, connected_ws)
+        ws.connect.assert_awaited_once_with(
+            ws_url=CONSTANTS.DEMO_WSS_API_URL,
+            ping_timeout=CONSTANTS.WS_HEARTBEAT_TIME_INTERVAL,
+        )
+
     # --- Auth signing tests ---
 
     def test_generate_ws_signature(self):

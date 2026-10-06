@@ -1,5 +1,6 @@
 import unittest
 
+from hummingbot.connector.exchange.binance import binance_constants as CONSTANTS
 from hummingbot.connector.exchange.binance import binance_utils as utils
 
 
@@ -42,3 +43,12 @@ class BinanceUtilTestCases(unittest.TestCase):
         }
 
         self.assertTrue(utils.is_exchange_information_valid(invalid_info_4))
+
+    def test_demo_domain_configuration(self):
+        connector_name = "binance_demo"
+
+        self.assertIn(connector_name, utils.OTHER_DOMAINS)
+        self.assertEqual(CONSTANTS.DEMO_DOMAIN, utils.OTHER_DOMAINS_PARAMETER[connector_name])
+        self.assertEqual("NVDAB-USDT", utils.OTHER_DOMAINS_EXAMPLE_PAIR[connector_name])
+        self.assertEqual(utils.DEFAULT_FEES, utils.OTHER_DOMAINS_DEFAULT_FEES[connector_name])
+        self.assertEqual(connector_name, utils.OTHER_DOMAINS_KEYS[connector_name].connector)

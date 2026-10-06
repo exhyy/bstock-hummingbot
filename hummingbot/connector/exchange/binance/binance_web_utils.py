@@ -9,24 +9,36 @@ from hummingbot.core.web_assistant.connections.data_types import RESTMethod
 from hummingbot.core.web_assistant.web_assistants_factory import WebAssistantsFactory
 
 
+def rest_url(domain: str = CONSTANTS.DEFAULT_DOMAIN) -> str:
+    return CONSTANTS.DEMO_REST_URL if domain == CONSTANTS.DEMO_DOMAIN else CONSTANTS.REST_URL.format(domain)
+
+
+def public_ws_url(domain: str = CONSTANTS.DEFAULT_DOMAIN) -> str:
+    return CONSTANTS.DEMO_WSS_URL if domain == CONSTANTS.DEMO_DOMAIN else CONSTANTS.WSS_URL.format(domain)
+
+
+def private_ws_url(domain: str = CONSTANTS.DEFAULT_DOMAIN) -> str:
+    return CONSTANTS.DEMO_WSS_API_URL if domain == CONSTANTS.DEMO_DOMAIN else CONSTANTS.WSS_API_URL.format(domain)
+
+
 def public_rest_url(path_url: str, domain: str = CONSTANTS.DEFAULT_DOMAIN) -> str:
     """
     Creates a full URL for provided public REST endpoint
     :param path_url: a public REST endpoint
-    :param domain: the Binance domain to connect to ("com" or "us"). The default value is "com"
+    :param domain: the Binance domain to connect to ("com", "us", or "demo"). The default value is "com"
     :return: the full URL to the endpoint
     """
-    return CONSTANTS.REST_URL.format(domain) + CONSTANTS.PUBLIC_API_VERSION + path_url
+    return rest_url(domain) + CONSTANTS.PUBLIC_API_VERSION + path_url
 
 
 def private_rest_url(path_url: str, domain: str = CONSTANTS.DEFAULT_DOMAIN) -> str:
     """
     Creates a full URL for provided private REST endpoint
     :param path_url: a private REST endpoint
-    :param domain: the Binance domain to connect to ("com" or "us"). The default value is "com"
+    :param domain: the Binance domain to connect to ("com", "us", or "demo"). The default value is "com"
     :return: the full URL to the endpoint
     """
-    return CONSTANTS.REST_URL.format(domain) + CONSTANTS.PRIVATE_API_VERSION + path_url
+    return rest_url(domain) + CONSTANTS.PRIVATE_API_VERSION + path_url
 
 
 def build_api_factory(

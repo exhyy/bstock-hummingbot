@@ -41,7 +41,7 @@ def main():
         ],
     }
     install_requires = [
-        "aiohttp>=3.8.5",
+        "aiohttp>=3.8.5,<3.14",
         "aiomqtt>=2.0.0",
         "asyncssh>=2.13.2",
         "aioprocessing>=2.0.1",
